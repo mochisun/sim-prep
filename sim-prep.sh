@@ -14,42 +14,56 @@ Notes:
 - need to check IF iptables exists
 '
 
+set -o pipefail
+
+#to log to journalctl
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
+
+#verify sim-daemon is available
+command -v sim-daemon >/dev/null 2>&1 || {
+  echo "sim-daemon not found. Exiting."
+  exit 1
+}
+
 #get sim status
 SIM_STATUS=$(sim-daemon simulation status)
 #get launcher status
 LAUNCHER_STATUS="$(sim-daemon launcher status)"
 ATTACH_PATH="/home/joby/attach_interfaces.sh"
-IPTABLE_PATH="/home/joby/iptables.sh
+IPTABLE_V1_PATH="/home/joby/iptables.sh"
+IPTABLE_V2_PATH="/home/joby/iptablesv2.sh"
 
 #stop sim if running if running
-if echo "$SIM_STATUS" | grep "RUNNING"; then
-  echo "Stopping sim..."
+if echo "$SIM_STATUS" | grep -qi "RUNNING"; then
+  log "Stopping sim..."
   sleep 3
   sim-daemon simulation stop
 fi
 
 #stop vft
-echo "Stopping VFT"
+log "Stopping VFT"
 sleep 3
 vft served stop
 
 #wait for othe hosts to stop
 sleep 20
-echo "Sim stopped"
+log "Sim stopped"
 
 #clean
-echo "Cleaning sim..."
+log "Cleaning sim..."
 sleep 3
-sim-daemon simulation clean
+sim-daemon simulation clean || exit 1
 
 #wait for other hosts to clean
 sleep 60
-echo "Sim Clean completed"
+log "Sim Clean completed"
 
 #configure
-echo "Configuring sim..."
+log "Configuring sim..."
 sleep 3
-sim-daemon simulation configure
+sim-daemon simulation configure || exit 1
 
 #wait for other hosts to configure
 sleep 60
@@ -58,33 +72,36 @@ sleep 60
 #--------------------------#
 #check if attach script exists and run if it does
 if [[ -f "$ATTACH_PATH" ]]; then
-  echo "Attaching interfaces"
+  log "Attaching interfaces"
   sleep 3
-  /home/joby/attach_interfaces.sh
+  "$ATTACH_PATH"
 else
-  echo "No attach script found. Skipping..."
+  log "No attach script found. Skipping..."
 fi
 
-#check if iptables script exist and then run based on SW version
-if [[ -f "IPTABLE_PATH" ]]; then
-  echo "Setting up iptables"
-  sleep 3
-  #if V1 SW ->
-  if echo "$LAUNCHER_STATUS" | grep -Eq '(s4tc-1|s4tc-v1)'; then
-    echo "Detected s4tc v1 launcher — configuring iptables for v1..."
-    /home/joby/iptables.sh
+#iptables based on SW version
+if echo "$LAUNCHER_STATUS" | grep -Eq '(s4tc-1|s4tc-v1)'; then
+  if [[ -f "$IPTABLE_V1_PATH" ]]; then
+    log "Detected s4tc v1 launcher — configuring iptables for v1..."
+    "$IPTABLE_V1_PATH"
   else
-    echo "Detected s4tc v2 launcher — configuring iptables for v2..."
-    /home/joby/iptablesv2.sh
+    log "iptables v1 script not found. Skipping..."
   fi
 else
-  echo "No iptables script found. Skipping..."
+  if [[ -f "$IPTABLE_V2_PATH" ]]; then
+    log "Detected s4tc v2 launcher — configuring iptables for v2..."
+    "$IPTABLE_V2_PATH"
+  else
+    log "iptables v2 script not found. Skipping..."
+  fi
 fi
 
-echo "Sim configured"
+
+
+log "Sim configured"
 sleep 10
 
 #start VFT
-echo "Starting VFT"
+log "Starting VFT"
 sleep 3
 vft served start -sim
