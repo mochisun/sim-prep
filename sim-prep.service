@@ -1,0 +1,28 @@
+[Unit]
+Description=Routine Simulator Clean and Reconfigure Preparation
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=joby
+WorkingDirectory=/home/joby/sim_prep
+ExecStart=/home/joby/sim_prep/sim-prep.sh
+Restart=always
+RuntimeMaxSec=1d
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+#Environment Variables
+Environment=HOME=/home/joby
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/home/joby/sim-prep/logs
+
+[Install]
+WantedBy=default.target
