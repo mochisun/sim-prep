@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#Description: Script to install all the sim preparation tool to include:
+  1. sim-prep.sh: executable script
+  2. sim-prep.service: service for the tool
+  3. sim-prep.timer: timer for perodic preparation
+
+set -o pipefail
+
+SERVICE_NAME="sim-prep-service"
+TIMER_NAME="sim-prep.timer"
+
+INSTALL_DIR="$HOME/sim_prep"
+SYSTEMD_USER_DIR="$HOME/.config/systemd/user"
+
+SCRIPT_SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+#log for journalctl functionality
+log(){
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+}
+#error handling
+error() {
+  echo "ERROR: $1" >&2
+  exit 1
+}
+
+# Check if running as root (we don't want this)
+if [ "$EUID" -eq 0 ]; then
+    error "This script should NOT be run as root. Please run as a regular user."
+    exit 1
+fi
+
+#verify systemctl and sim-daemon are available
+command -v systemctl >/dev/null 2>&1 || error "systemctl not found"
+command -v sim-daemon >/dev/null 2>&1 || error "sim-daemon not found"
+
+log "Starting sim-prep installation for user: $(whoami)"
+
+log "Creating install directories..."
+mkdir -p "$INSTALL_DIR"
+mkdir -p "$SYSTEMD_USER_DIR"
+
+log "Installing sim-prep.sh..."
+cp "$SCRIPT_SOURCE_DIR/sim-prep.sh" "$INSTALL_DIR"
+#give executable permissions
+chmod +x "$INSTALL_DIR/sim-prep.sh"
+
+log "Installing systemd service..."
+cp "$SCRIPT_SOURCE_DIR/$SERVICE_NAME" "$SYSTEMD_USER_DIR"
+
+
+
+
+
+
+
+
+
