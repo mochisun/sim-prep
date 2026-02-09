@@ -7,6 +7,8 @@ Description: Script to install all the sim preparation tool to include:
 '
 set -o pipefail
 
+USER=$(whoami)
+
 SERVICE_NAME="sim-prep.service"
 TIMER_NAME="sim-prep.timer"
 
@@ -34,7 +36,7 @@ fi
 command -v systemctl >/dev/null 2>&1 || error "systemctl not found"
 command -v sim-daemon >/dev/null 2>&1 || error "sim-daemon not found"
 
-log "Starting sim-prep installation for user: $(whoami)"
+log "Starting sim-prep installation for user: $USER"
 
 log "Creating install directories..."
 mkdir -p "$INSTALL_DIR"
@@ -67,11 +69,13 @@ log "Installation of sim-prep tool complete!"
 log "Installation completed successfully!"
 echo ""
 echo "=== Installation Summary ==="
-echo "✓ User: $(whoami)"
-echo "✓ User systemd service: $SERVICE_NAME (enabled)"
+echo "✓ User: $USER"
+echo "✓ User systemd service: $SERVICE_NAME"
 echo "• Service files are stored in: $SYSTEMD_USER_DIR"
-echo "• Service is scheduled to be run every workday morning (M-F) at 2am"
-echo "• To disable autostart: systemctl --user disable $TIMER_NAME"
+echo "• Service is scheduled via systemd timer"
+echo "• To run sim-prep manually: systemctl --user start $SERVICE_NAME"
+echo "• To view timer status: systemctl --user list-timers"
+echo "• To disable schedule: systemctl --user disable $TIMER_NAME"
 echo "• To view logs: journalctl --user -u $SERVICE_NAME"
 echo ""
 
