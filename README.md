@@ -27,9 +27,9 @@ sim-prep/
    - ./sim-prep-installer.sh
 
 Service and Timer will live here:  
-~/.config/systemd/user/  
+- ~/.config/systemd/user/  
 Main script will live here:  
-/home/joby/sim_prep/  
+- /home/joby/sim_prep/  
 
 **Manual Usage:**  
 - run sim-prep: systemctl --user start sim-prep
