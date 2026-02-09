@@ -57,7 +57,7 @@ log "Installing systemd timer..."
 cp "$SCRIPT_SOURCE_DIR/$TIMER_NAME" "$SYSTEMD_USER_DIR"
 
 #reload systemd
-log "Reloading systemd
+log "Reloading systemd..."
 systemctl --user daemon-reload
 
 #enable timer
