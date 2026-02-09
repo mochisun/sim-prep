@@ -60,9 +60,11 @@ cp "$SCRIPT_SOURCE_DIR/$TIMER_NAME" "$SYSTEMD_USER_DIR"
 log "Reloading systemd..."
 systemctl --user daemon-reload
 
-#enable timer
+#enable and start timer
 log "Enabling sim-prep timer..."
 systemctl --user enable "$TIMER_NAME"
+log "Starting sim-prep timer..."
+systemctl --user start "$TIMER_NAME"
 
 log "Installation of sim-prep tool complete!"
 
