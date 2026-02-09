@@ -2,7 +2,7 @@
 Description=Simulator Preparation Service
 
 [Timer]
-OnCalender=Mon..Fri 02:00
+OnCalendar=Mon..Fri 02:00
 
 [Install]
 WantedBy=timers.target
