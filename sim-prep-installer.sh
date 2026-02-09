@@ -40,11 +40,13 @@ log "Creating install directories..."
 mkdir -p "$INSTALL_DIR"
 mkdir -p "$SYSTEMD_USER_DIR"
 
+#instal main script
 log "Installing sim-prep.sh..."
 cp "$SCRIPT_SOURCE_DIR/sim-prep.sh" "$INSTALL_DIR"
 log "Making script executable..."
 chmod +x "$INSTALL_DIR/sim-prep.sh"
 
+#install service
 log "Installing systemd service..."
 cp "$SCRIPT_SOURCE_DIR/$SERVICE_NAME" "$SYSTEMD_USER_DIR"
 
