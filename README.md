@@ -25,10 +25,11 @@ sim-prep/
 3. Run installer:
    - chmod +x sim-prep-installer.sh
    - ./sim-prep-installer.sh
+
 Service and Timer will live here:  
-~/.config/systemd/user/
+~/.config/systemd/user/  
 Main script will live here:  
-/home/joby/sim_prep/
+/home/joby/sim_prep/  
 
 **Manual Usage:**  
 - run sim-prep: systemctl --user start sim-prep
@@ -36,5 +37,5 @@ Main script will live here:
 - view logs: journalctl --user -u sim-prep --no-pager
 
 **To disable automated execution:**  
-systemctl --user disable sim-prep.timer
-systemctl --user stop sim-prep.timer
+systemctl --user disable sim-prep.timer  
+systemctl --user stop sim-prep.timer  
