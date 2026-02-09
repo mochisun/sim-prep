@@ -7,7 +7,7 @@ Description: Script to install all the sim preparation tool to include:
 '
 set -o pipefail
 
-SERVICE_NAME="sim-prep-service"
+SERVICE_NAME="sim-prep.service"
 TIMER_NAME="sim-prep.timer"
 
 INSTALL_DIR="$HOME/sim_prep"
