@@ -20,7 +20,7 @@ sim-prep/
 
 **How to Install:**  
 1. Clone repo:
-   - git clone <repo url> sim-prep
+   - git clone repo-url sim-prep
    - cd sim-prep
 2. Run installer:
    - chmod +x sim-prep-installer.sh
