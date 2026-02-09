@@ -1,10 +1,10 @@
 #!/bin/bash
-
-#Description: Script to install all the sim preparation tool to include:
+:'
+Description: Script to install all the sim preparation tool to include:
   1. sim-prep.sh: executable script
   2. sim-prep.service: service for the tool
-  3. sim-prep.timer: timer for perodic preparation
-
+  3. sim-prep.timer: timer to make the service periodic
+'
 set -o pipefail
 
 SERVICE_NAME="sim-prep-service"
@@ -28,7 +28,6 @@ error() {
 # Check if running as root (we don't want this)
 if [ "$EUID" -eq 0 ]; then
     error "This script should NOT be run as root. Please run as a regular user."
-    exit 1
 fi
 
 #verify systemctl and sim-daemon are available
@@ -43,13 +42,41 @@ mkdir -p "$SYSTEMD_USER_DIR"
 
 log "Installing sim-prep.sh..."
 cp "$SCRIPT_SOURCE_DIR/sim-prep.sh" "$INSTALL_DIR"
-#give executable permissions
+log "Making script executable..."
 chmod +x "$INSTALL_DIR/sim-prep.sh"
 
 log "Installing systemd service..."
 cp "$SCRIPT_SOURCE_DIR/$SERVICE_NAME" "$SYSTEMD_USER_DIR"
 
+:'
+#install timer
+log "Installing systemd timer..."
+cp "$SCRIPT_SOURCE_DIR/$TIMER_NAME" "$SYSTEMD_USER_DIR"
+'
 
+#reload systemd
+log "Reloading systemd
+systemctl --user daemon-reload
+
+
+:'
+#enable timer
+log "Enabling sim-prep timer..."
+systemctl --user enable "$TIMER_NAME"
+'
+
+log "Installation of sim-prep tool complete!"
+
+log "Installation completed successfully!"
+echo ""
+echo "=== Installation Summary ==="
+echo "✓ User: $(whoami)"
+echo "✓ User systemd service: $SERVICE_NAME (enabled)"
+echo "• Service files are stored in: $SYSTEMD_USER_DIR"
+echo "• Service is scheduled to be run every workday morning (M-F) at 2am"
+echo "• To disable autostart: systemctl --user disable "$TIMER_NAME"
+echo "• To view logs: journalctl --user -u $SERVICE_NAME
+echo ""
 
 
 
