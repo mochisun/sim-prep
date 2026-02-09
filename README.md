@@ -22,14 +22,12 @@ sim-prep/
 1. Clone repo:
    - git clone <repo url> sim-prep
    - cd sim-prep
-3. Run installer:
+2. Run installer:
    - chmod +x sim-prep-installer.sh
-   - ./sim-prep-installer.sh
+   - ./sim-prep-installer.sh  
 
-Service and Timer will live here:  
-- ~/.config/systemd/user/  
-Main script will live here:  
-- /home/joby/sim_prep/  
+Service and Timer will live here: ~/.config/systemd/user/  
+Main script will live here: /home/joby/sim_prep/  
 
 **Manual Usage:**  
 - run sim-prep: systemctl --user start sim-prep
