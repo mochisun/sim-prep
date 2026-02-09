@@ -71,7 +71,7 @@ echo "✓ User: $(whoami)"
 echo "✓ User systemd service: $SERVICE_NAME (enabled)"
 echo "• Service files are stored in: $SYSTEMD_USER_DIR"
 echo "• Service is scheduled to be run every workday morning (M-F) at 2am"
-echo "• To disable autostart: systemctl --user disable "$TIMER_NAME"
+echo "• To disable autostart: systemctl --user disable $TIMER_NAME"
 echo "• To view logs: journalctl --user -u $SERVICE_NAME"
 echo ""
 
