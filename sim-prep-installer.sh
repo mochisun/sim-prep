@@ -48,22 +48,17 @@ chmod +x "$INSTALL_DIR/sim-prep.sh"
 log "Installing systemd service..."
 cp "$SCRIPT_SOURCE_DIR/$SERVICE_NAME" "$SYSTEMD_USER_DIR"
 
-:'
 #install timer
 log "Installing systemd timer..."
 cp "$SCRIPT_SOURCE_DIR/$TIMER_NAME" "$SYSTEMD_USER_DIR"
-'
 
 #reload systemd
 log "Reloading systemd
 systemctl --user daemon-reload
 
-
-:'
 #enable timer
 log "Enabling sim-prep timer..."
 systemctl --user enable "$TIMER_NAME"
-'
 
 log "Installation of sim-prep tool complete!"
 
