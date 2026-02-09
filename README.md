@@ -1,6 +1,5 @@
 # sim-prep
-##Overview:## 
-
+**Overview:**
 This tool is created to prepare simulators for daily use by cleaning and reconfiguring to achieve a known-good state.
 Designed to run on a periodic timer (M-F) and manually without requiring root privelages. 
 
