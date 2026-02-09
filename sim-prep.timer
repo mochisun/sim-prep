@@ -1,0 +1,8 @@
+[UNIT]
+Description=Simulator Preparation Service
+
+[TIMER]
+OnCalender=Mon..Fri 2:00
+
+[INSTALL]
+WantedBy=timers.target
