@@ -35,6 +35,7 @@ echo $SIM_PRESET_FILE
 
 
 FARASIS=$(awk '/farasis_rev/ {print $0}' ${SIM_PRESET_fILE})
+FARASIS_REV=$(awk -F'rev' '/bms_2p1_farasis_rev/ {print $2}' "$SIM_PRESET_FILE" | cut -d'_' -f1)
 
 "sim_components": {
         "aileron_2p1_1": {
