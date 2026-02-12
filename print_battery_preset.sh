@@ -32,3 +32,21 @@ fi
 
 
 echo $SIM_PRESET_FILE
+
+
+FARASIS=$(awk '/farasis_rev/ {print $0}' ${SIM_PRESET_fILE})
+
+"sim_components": {
+        "aileron_2p1_1": {
+            "is_disabled": true
+        },
+        "aileron_2p1_2": {
+            "is_disabled": true
+        }
+        "bms_2p1_farasis_rev2_2": {
+            "is_disabled": true
+        },
+        "bms_2p1_farasis_rev2_3": {
+            "is_disabled": true
+        }
+}
